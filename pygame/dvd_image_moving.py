@@ -9,6 +9,7 @@
 #   * draw a rectangle on the screen
 #   * move the rectangle in x and y
 
+import random
 import pygame
 
 # ----- CONSTANTS
@@ -29,6 +30,7 @@ class Rectangle:
         self.colour = colour
 
         self.vel_x = 3
+        self.vel_y = 3
 
     def draw(self, screen):
      pygame.draw.rect(
@@ -38,7 +40,7 @@ class Rectangle:
              self.x,
              self.y,
              self.width,
-                self.height,
+             self.height,
           ]
      )
 
@@ -49,6 +51,14 @@ class Rectangle:
             None
         """
         self.x += self.vel_x
+        self.y += self.vel_y
+
+        # keep it in the screen
+        if self.x + self.width > WIDTH or self.x < 0:
+            self.vel_x *= -1
+        if self.y + self.height > HEIGHT or self.y < 0:
+            self.vel_y *= -1
+
 
 def main():
     pygame.init()
@@ -63,7 +73,15 @@ def main():
     clock = pygame.time.Clock()
 
     block_one = Rectangle((0, 225, 0))
-    block_one.vel_x = - 1
+    block_two = Rectangle()
+    block_two.x, block_two.y = (
+        random.randrange(0, WIDTH-block_two.width),
+        random.randrange(0, HEIGHT-block_two.height)
+    )
+    block_two.vel_x, block_two.vel_y = (
+        random.choice([-4, -3, 3, 4]),
+        random.choice([-4, -3, 3, 4])
+    )
 
     # ----- MAIN LOOP
     while not done:
@@ -75,10 +93,12 @@ def main():
         # ----- LOGIC
         # update the position of the block
         block_one.update()
+        block_two.update()
 
         # ----- DRAW
         screen.fill(BLACK)
         block_one.draw(screen)
+        block_two.draw(screen)
         # ----- UPDATE
         pygame.display.flip()
         clock.tick(60)
