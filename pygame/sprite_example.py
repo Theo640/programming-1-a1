@@ -46,7 +46,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = pygame.mouse.get_pos()
 
 
-
 def main():
     pygame.init()
 
@@ -62,6 +61,7 @@ def main():
 
     # Sprite group and sprite creation
     all_sprites_group = pygame.sprite.Group()
+    jewels_group = pygame.sprite.Group()
 
     # Jewel creation
     for i in range(NUM_JEWELS):
@@ -69,6 +69,7 @@ def main():
         jewel.rect.x = random.randrange(WIDTH - jewel.rect.width)
         jewel.rect.y = random.randrange(HEIGHT - jewel.rect.height)
         all_sprites_group.add(jewel)
+        jewels_group.add(jewel)
 
     # Player creation
     player = Player()
@@ -83,6 +84,12 @@ def main():
 
         # ----- LOGIC
         all_sprites_group.update()
+
+        # Player collides with jewel
+        jewels_collected = pygame.sprite.spritecollide(player, jewels_group, True)
+        for jewel in jewels_collected:
+            score += 1
+            print(score)
 
         # ----- DRAW
         screen.fill(BLACK)
