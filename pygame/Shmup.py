@@ -5,6 +5,7 @@
 #   - create new sprites IN the main loop (bullets)
 #   - using pygame.mouse
 
+import random
 import pygame
 
 # ----- CONSTANTS
@@ -15,6 +16,7 @@ SKY_BLUE = (95, 165, 228)
 WIDTH = 720
 HEIGHT = 1000
 TITLE = "<SHMUP>"
+NUM_ROWS = 8
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -101,7 +103,7 @@ def main():
     # --- enemies
     for i in range(NUM_ROWS):
         enemy = Enemy(100+i*30)
-        enemy.rect.x = enemy.rect.x - random.choice([-10, 10])
+        enemy.rect.x = enemy.rect.x - random.choice([-10])
         all_sprites.add(enemy)
         enemy_sprites.add(enemy)
 
